@@ -6,6 +6,7 @@ package main
 import (
     "github.com/influxdata/influxdb/client"
     "github.com/pelletier/go-toml"
+    "github.com/coreos/go-systemd/daemon" // Add this for daemonized Infping
     "fmt"
     "log"
     "os"
@@ -118,6 +119,8 @@ func writePoints(config *toml.Tree, con *client.Client, host string, sent string
     if err != nil {
         log.Fatal(err)
     }
+
+        daemon.SdNotify(false, "READY=1") // daemonize infping
 }
 
 func main() {
